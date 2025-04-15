@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import UseAuth from "../hooks/UseAuth";
+import Swal from "sweetalert2";
 
 
 
@@ -12,7 +13,7 @@ const CheckOut = () => {
     const date = new Date().toLocaleDateString();
    
 
-    const handleCheckOut =e=>{
+    const handleCheckOut =async(e)=>{
         e.preventDefault();
 
         const firstName=e.target.firstName.value
@@ -22,11 +23,41 @@ const CheckOut = () => {
         const message=e.target.message.value
 
        const order ={
-        name:name,email,date,service:_id,price,phone,message
+        name:user?.displayName,email,date,service:_id,price,phone,message
 
        }
-       console.log(order);
-
+       try {
+        const response = await fetch("http://localhost:5000/services", {
+          method: "POST",
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(order)
+        });
+    
+        const data = await response.json();
+        // console.log("Server Response:", data);
+        
+        if(data.insertedId){
+             Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `Booking Successfully`,
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+        }
+        
+      } catch (error) {
+        console.log("Error posting order:", error);
+         Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: `${error.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+      }
 
     }
  
