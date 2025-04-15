@@ -1,8 +1,9 @@
-import React, { use, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 function Services() {
-//   const services = [
+
 //     {
 //       id: 1,
 //       title: "Electrical System",
@@ -47,12 +48,12 @@ function Services() {
   const [services,setServices]=useState([])
 
   useEffect(()=>{
-    fetch("services.json")
+    fetch("http://localhost:5000/services")
     .then(res=>res.json())
     .then((data)=>setServices(data))
   },[])
 
-  console.log(services);
+ 
 
 
 
@@ -88,9 +89,9 @@ function Services() {
               <span className="text-red-600 font-semibold">
                 Price : ${parseFloat(service.price).toFixed(2)}
               </span>
-              <button className="p-2 rounded-full hover:bg-red-50 text-red-600 transition-colors">
+              <Link to={`/checkout/${service._id}`}><button className="p-2 rounded-full hover:bg-red-50 text-red-600 transition-colors">
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </button></Link>
             </div>
           </div>
         </div>
