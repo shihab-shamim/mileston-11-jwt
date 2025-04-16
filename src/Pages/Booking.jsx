@@ -82,6 +82,31 @@ function Booking() {
       });
    
   }
+  const handleUpdate=(id)=>{
+    const status={status:"confirm"}
+    fetch(`http://localhost:5000/booking/${id}`,{
+        method:"PATCH",
+        headers:{
+            "content-type":"application/json"
+        },
+        body:JSON.stringify(status)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.modifiedCount > 0){
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: `Confirm Successfully`,
+                showConfirmButton: false,
+                timer: 1500
+              });
+              setReload(!reload)
+        }
+
+    })
+
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -123,9 +148,13 @@ function Booking() {
               <div className="text-right">
                 <p className="font-medium text-gray-900">${item.price}</p>
                 <p className="text-sm text-gray-500">{item.date}</p>
-                <span className="inline-block mt-1 px-3 py-1 bg-red-100 text-red-600 text-sm rounded-full">
+                {
+                    item?.status?<span className="inline-block cursor-pointer mt-1 px-3 py-1 bg-green-100 text-green-600 text-sm rounded-full">
+                    Confirmed
+                  </span>:<span onClick={()=>handleUpdate(item?._id)} className="inline-block cursor-pointer mt-1 px-3 py-1 bg-red-100 text-red-600 text-sm rounded-full">
                   Padding
                 </span>
+                }
               </div>
             </div>
           ))}
