@@ -9,8 +9,8 @@ const Navbar = () => {
     <li><Link to="/">Home</Link></li>
     <li><Link to="/about">About</Link></li>
     <li><Link to="/service">Service</Link></li>
+    {user && <li><Link to="/bookings">Booking</Link></li>}
     {user?<li><button onClick={()=>logOut()}>Log Out</button></li>:<li><Link to='/login'>Log In</Link></li>}
-
     {/* <li><Link to="/">Home</Link></li> */}
     </>
     return (

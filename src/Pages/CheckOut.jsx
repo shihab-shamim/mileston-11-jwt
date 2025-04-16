@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 const CheckOut = () => {
     const {user}=UseAuth()
-    const {title,_id,price}=useLoaderData()
+    const {title,_id,price,img}=useLoaderData()
     const name= user?.displayName.split(" ")
     const firstname=name?.[0]
     const lastname=name?.pop()
@@ -16,14 +16,13 @@ const CheckOut = () => {
     const handleCheckOut =async(e)=>{
         e.preventDefault();
 
-        const firstName=e.target.firstName.value
-        const lastName=e.target.lastName.value
+      
         const phone=e.target.phone.value
         const email=e.target.email.value
         const message=e.target.message.value
 
        const order ={
-        name:user?.displayName,email,date,service:_id,price,phone,message
+        name:user?.displayName,email,date,service:_id,price,phone,message,img,title
 
        }
        try {
