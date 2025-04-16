@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { X, ArrowLeft, Trash2 } from 'lucide-react';
 import UseAuth from '../hooks/UseAuth';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 function Booking() {
     const {user}=UseAuth()
@@ -46,17 +47,40 @@ function Booking() {
 
   const handleBookingDeletes =()=>{
     const ids=cartItems.map(item=>item._id)
-    fetch(`http://localhost:5000/booking`,{
-        method:"DELETE",
-        headers:{
-            "content-type":"application/json"
-        },
-        body:JSON.stringify(ids)
-    })
-    .then(res=>res.json())
-    .then(data=>{
-        console.log(data);
-    })
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Delete",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            
+            fetch(`http://localhost:5000/booking`,{
+                method:"DELETE",
+                headers:{
+                    "content-type":"application/json"
+                },
+                body:JSON.stringify(ids)
+            })
+            .then(res=>res.json())
+            .then(data=>{
+                if(data.deletedCount > 0){
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `Delete Successfully`,
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                      setReload(!reload)
+                }
+            })
+        }
+      });
+   
   }
 
   return (
@@ -109,15 +133,15 @@ function Booking() {
 
         {/* Bottom Actions */}
         <div className="mt-6 flex items-center justify-between">
-          <button className="flex items-center text-gray-600 hover:text-gray-900">
+          <Link to="/" className="flex  cursor-pointer items-center text-gray-600 hover:text-gray-900">
             <ArrowLeft size={20} className="mr-2" />
             Continue Shopping
-          </button>
+          </Link>
           
-          <button onClick={handleBookingDeletes} className="flex items-center text-red-600 hover:text-red-700">
+          { cartItems.length >0 && <button onClick={handleBookingDeletes} className="flex cursor-pointer items-center text-red-600 hover:text-red-700">
             <Trash2 size={20} className="mr-2" />
             Clear Shopping Cart
-          </button>
+          </button>}
         </div>
       </div>
     </div>
