@@ -14,6 +14,9 @@ function Booking() {
     // .then(res=>res.json())
     // .then(data=>setCartItems(data))
     axios.get(`http://localhost:5000/booking?email=${user?.email}`,{withCredentials:true})
+    .then(res=>{
+      setCartItems(res.data)
+    })
 
   },[user,reload])
 
