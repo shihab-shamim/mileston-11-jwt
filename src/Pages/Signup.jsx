@@ -6,9 +6,13 @@ import  { AuthContext } from '../provider/AuthProvider';
 import UseAuth from '../hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { updateProfile } from 'firebase/auth';
+import useGoogle from '../hooks/useGoogle';
 
 function Signup() {
-    const {createUser,handleGoogle}=UseAuth()
+    const {createUser}=UseAuth();
+    const google=useGoogle()
+  
+   
 
 
     const handleSignUp =(e)=>{
@@ -164,7 +168,7 @@ function Signup() {
               <button className="p-3 rounded-full border hover:bg-gray-50 transition-colors">
                 <img src="https://www.svgrepo.com/show/475700/linkedin-color.svg" alt="LinkedIn" className="w-6 h-6" />
               </button>
-              <button onClick={()=>handleGoogle()} className="p-3 rounded-full border hover:bg-gray-50 transition-colors">
+              <button onClick={()=>google()} className="p-3 rounded-full border hover:bg-gray-50 transition-colors">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-6 h-6" />
               </button>
             </div>

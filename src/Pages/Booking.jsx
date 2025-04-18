@@ -3,15 +3,17 @@ import { X, ArrowLeft, Trash2 } from 'lucide-react';
 import UseAuth from '../hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function Booking() {
     const {user}=UseAuth()
     const [cartItems,setCartItems]=useState([])
     const [reload,setReload]=useState(true)
   useEffect(()=>{
-    fetch(`http://localhost:5000/booking?email=${user?.email}`)
-    .then(res=>res.json())
-    .then(data=>setCartItems(data))
+    // fetch(`http://localhost:5000/booking?email=${user?.email}`)
+    // .then(res=>res.json())
+    // .then(data=>setCartItems(data))
+    axios.get(`http://localhost:5000/booking?email=${user?.email}`,{withCredentials:true})
 
   },[user,reload])
 

@@ -2,21 +2,28 @@
 import React from 'react';
 import { Lock } from 'lucide-react';
 import login from "../assets/images/login/login.svg"
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import UseAuth from '../hooks/UseAuth';
 import Swal from 'sweetalert2';
+import useGoogle from '../hooks/useGoogle';
+import axios from 'axios';
 
 function Login() {
-  const {logIn,user,handleGoogle}=UseAuth()
+  const {logIn}=UseAuth()
+  const google=useGoogle()
+  const location=useLocation()
+  const path=location?.state?location?.state:"/"
+  const navigate=useNavigate()
+  
 
 
     const handleLogin =(e)=>{
         e.preventDefault()
         const email=e.target.email.value;
         const password=e.target.password.value;
-        console.log(email,password);
         logIn(email,password)
         .then(result=>{
+          const user={email}
           if(result.user){
             Swal.fire({
               position: "top-end",
@@ -25,6 +32,14 @@ function Login() {
               showConfirmButton: false,
               timer: 1500
             });
+            // navigate(path) 
+            axios.post('http://localhost:5000/jwt',user,{withCredentials:true})
+            .then(res=>{
+              if(res.data.success){
+                navigate(path)
+              }
+            })
+
           }
         })
         .catch(error=>{
@@ -108,7 +123,7 @@ function Login() {
               <button className="p-3 rounded-full border hover:bg-gray-50 transition-colors">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" className="w-6 h-6" />
               </button>
-              <button onClick={()=>handleGoogle()} className="p-3 rounded-full border hover:bg-gray-50 transition-colors">
+              <button onClick={()=>google(path)} className="p-3 rounded-full border hover:bg-gray-50 transition-colors">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-6 h-6" />
               </button>
             </div>

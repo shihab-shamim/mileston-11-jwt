@@ -5,11 +5,11 @@ import Swal from "sweetalert2";
 const google = new GoogleAuthProvider();
 
 export const AuthContext=createContext();
-const auth = getAuth(app);
+const auth = getAuth(app); 
 
 const AuthProvider = ({children}) => {
  const [user,setUser]=useState(null);
- const [loading,setLoading]=useState(true)
+ const [loading,setLoading]=useState(true);
 
 
  const createUser=(email,password)=>{
@@ -27,32 +27,7 @@ const AuthProvider = ({children}) => {
      return signInWithPopup(auth,google)
  }
 
- const handleGoogle=()=>{
-    googleLogIn()
-    .then(result=>{
-        console.log(result.user);
-        if(result.user){
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Log in success",
-                showConfirmButton: false,
-                timer: 1500
-              });
-        }
-    })
-    .catch(error=>{
-        Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: `${error.message}`,
-            showConfirmButton: false,
-            timer: 1500
-          });
-    })
 
-
-}
 
 const logOut =()=>{
     signOut(auth)
@@ -82,7 +57,7 @@ const logOut =()=>{
 
 
     const authInfo={
-        user,loading,createUser,logIn,handleGoogle,logOut
+        user,loading,createUser,logIn,googleLogIn,logOut
     }
     return (
         <AuthContext.Provider value={authInfo}>
