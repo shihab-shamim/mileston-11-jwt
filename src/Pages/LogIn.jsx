@@ -32,7 +32,7 @@ function Login() {
               showConfirmButton: false,
               timer: 1500
             });
-            // navigate(path) 
+            navigate(path) 
             axios.post('http://localhost:5000/jwt',user,{withCredentials:true})
             .then(res=>{
               if(res.data.success){

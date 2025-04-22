@@ -18,6 +18,10 @@ function Booking() {
       setCartItems(res.data)
     })
 
+    // axios.get(`http://localhost:5000/booking?email=${user?.email}`,{withCredentials:true})
+    // .then(res=>{
+    //   console.log(res);
+    // })
   },[user,reload])
 
   const handleBookingDelete=(id)=>{
