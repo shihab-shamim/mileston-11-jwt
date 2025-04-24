@@ -33,12 +33,12 @@ function Login() {
               timer: 1500
             });
             navigate(path) 
-            axios.post('http://localhost:5000/jwt',user,{withCredentials:true})
-            .then(res=>{
-              if(res.data.success){
-                navigate(path)
-              }
-            })
+            // axios.post('http://localhost:5000/jwt',user,{withCredentials:true})
+            // .then(res=>{
+            //   if(res.data.success){
+            //     navigate(path)
+            //   }
+            // })
 
           }
         })

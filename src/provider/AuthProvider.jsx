@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import app from "../fisebase/firebase.config";
 import Swal from "sweetalert2";
+import axios from "axios";
 const google = new GoogleAuthProvider();
 
 export const AuthContext=createContext();
@@ -49,11 +50,22 @@ const logOut =()=>{
     const unSbcribs =  onAuthStateChanged(auth,(currentUser)=>{
         setUser(currentUser);
         setLoading(false)
+        const userInfo=currentUser?.email || user?.email
+        const loggedUser={email:userInfo}
+
+        if(currentUser){
+            axios.post('http://localhost:5000/jwt',loggedUser,{withCredentials:true})
+            .then(res=>console.log("setToken",res.data))
+        }
+        else{
+            axios.post('http://localhost:5000/logout',loggedUser,{withCredentials:true})
+            .then(res=>console.log("logout",res.data))
+        }
     })
     return(()=>{
         return unSbcribs()
     })
- },[])
+ },[user])
 
 
     const authInfo={

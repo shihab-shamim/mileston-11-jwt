@@ -4,16 +4,19 @@ import UseAuth from '../hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 function Booking() {
     const {user}=UseAuth()
+    const axiosSecure=useAxiosSecure()
     const [cartItems,setCartItems]=useState([])
     const [reload,setReload]=useState(true)
   useEffect(()=>{
     // fetch(`http://localhost:5000/booking?email=${user?.email}`)
     // .then(res=>res.json())
     // .then(data=>setCartItems(data))
-    axios.get(`http://localhost:5000/booking?email=${user?.email}`,{withCredentials:true})
+
+    axiosSecure.get(`/booking?email=${user?.email}`,{withCredentials:true})
     .then(res=>{
       setCartItems(res.data)
     })
@@ -22,7 +25,7 @@ function Booking() {
     // .then(res=>{
     //   console.log(res);
     // })
-  },[user,reload])
+  },[user,reload,axiosSecure])
 
   const handleBookingDelete=(id)=>{
     Swal.fire({
@@ -136,7 +139,7 @@ function Booking() {
       {/* Cart Items */}
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm">
-          {cartItems.map((item, index) => (
+          {cartItems?.map((item, index) => (
             <div key={item.id} className={`flex items-center p-4 ${index !== cartItems.length - 1 ? 'border-b border-gray-200' : ''}`}>
               <button className="p-1 hover:bg-gray-100 rounded-full">
                 <X onClick={()=>handleBookingDelete(item._id)} size={20} className="text-gray-400 cursor-pointer" />
